@@ -12,38 +12,22 @@
 <body>
     <!-- si la cadena es valida se muestra la tabla -->
     <div class="container">
-        <h1 class="container__title">Analizador lexico y sintactico</h1>
-        <input type="text" class="container__input">
-        <button id="button" class="container__button">Verificar</button>
-        <table class="container__table">
-            <thead>
+        <h1 class="container__title">Analizador <b> léxico</b> y <b> [sintáctico].</b></h1>
+        <input type="text" id="input" placeholder="Ingrese una cadena." class="container__input" maxlength="25">
+        <button id="button" class="container__button">Mostrar tabla</button>
+        <table class="container__table" id="table">
+            <thead class="table__header">
                 <tr>
                     <th>Simbolo</th>
                     <th>Tipo de dato</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th>4</th>
-                    <th>Número</th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>Número</th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>Número</th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>Número</th>
-                </tr>
+            <tbody id="tbody">
+                
             </tbody>
         </table>
-
     </div>
-
+    <script src="script.js"></script>
 </body>
 
 </html>
