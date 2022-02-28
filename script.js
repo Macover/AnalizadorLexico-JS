@@ -9,46 +9,47 @@ let inputValue = "";
 let inputValueLength = 0;
 let inputString = "";
 
+
 button.addEventListener("click", (e) => {
     // table.style.opacity = "1";
-    e.preventDefault();    
+    e.preventDefault();
     inputValue = input.value;
-    inputValueLength = input.value.length;  
-    
+    inputValueLength = input.value.length;
 
-    for(let i=0; i<inputValueLength; i++){
-        
-    let stringTemp = "";
-    let valueType = "";
 
-    if(isANumber(inputValue[i])){
-        stringTemp = inputValue[i];
-        valueType = "es número"
-    }
-    if(isOperator(inputValue[i])){
-        stringTemp = inputValue[i];
-        valueType = "es operador";
-    }      
+    for (let i = 0; i < inputValueLength; i++) {
 
-    let HTML_CODE = `
+        let stringTemp = "";
+        let valueType = "";
+
+        if (isANumber(inputValue[i])) {
+            stringTemp = inputValue[i];
+            valueType = "es número"
+        }
+        if (isOperator(inputValue[i])) {
+            stringTemp = inputValue[i];
+            valueType = "es operador";
+        }
+
+        let HTML_CODE = `
     <tr>
         <th>${stringTemp}</th>
         <th>${valueType}</th>
     </tr>    
     `;
-    tBodyTable.innerHTML += HTML_CODE;
+        tBodyTable.innerHTML += HTML_CODE;
     }
 
 });
 
 input.addEventListener("keyup", (e) => {
-    
+
     // Validation for characters
-    if(isCharacter(e.key)){
+    if (isCharacter(e.key)) {
         input.value = " "
         errorMessage.textContent = "Error: El input no acepta letras.";
         errorMessage.style.opacity = "1";
-    }else{
+    } else {
         errorMessage.style.opacity = "0";
     }
 
@@ -56,8 +57,44 @@ input.addEventListener("keyup", (e) => {
 
 });
 
-const evaluateString = (INPUT_STRING)=>{
-    
+let rules = {
+    "S": [
+        ["The", "N", "V"]
+    ],
+    "N": [
+        ["cat"],
+        ["dog"]
+    ],
+    "V": [
+        ["meows"],
+        ["barks"]
+    ]
+};
+const evaluateCFG = (start, expansion) => {
+    if (rules[start]) {
+        let rnd = Math.floor(Math.random() * rules[start].length);
+        console.log("random",rnd)
+        let pick = rules[start][rnd];
+        console.log(pick);
+        for (let i = 0; i < pick.length; i++) {
+            evaluateCFG(pick[i], expansion);
+        }
+    } else {
+        expansion.push(start);
+    }
+    return expansion.join(" ");
+}
+
+// console.table(rules)
+
+let start = "S";
+let expansion = [];
+let result = evaluateCFG(start, expansion);
+console.log(result)
+
+
+const evaluateString = (INPUT_STRING) => {
+
     let string = INPUT_STRING;
     let initialState = 1;
     let finalState = 1;
@@ -66,45 +103,45 @@ const evaluateString = (INPUT_STRING)=>{
     let bool = true;
     let accountant = 0;
 
-    while(bool){
-        if(accountant > string.length - 1){
+    while (bool) {
+        if (accountant > string.length - 1) {
             bool = false;
             break;
         }
-        if(currentState == 1){
-            if(string[accountant] == 1){
+        if (currentState == 1) {
+            if (string[accountant] == 1) {
                 currentState = 1;
             }
-            if(string[accountant] == 0){
+            if (string[accountant] == 0) {
                 currentState = 2;
             }
             accountant++;
             continue;
         }
-        if(currentState == 2){
-            if(string[accountant] == 1){
+        if (currentState == 2) {
+            if (string[accountant] == 1) {
                 currentState = 2;
             }
-            if(string[accountant] == 0){
+            if (string[accountant] == 0) {
                 currentState = 1;
             }
             accountant++;
             continue;
         }
     }
-    if(currentState == finalState){
-        if(input.classList.contains("bottom-wrong-input")){
+    if (currentState == finalState) {
+        if (input.classList.contains("bottom-wrong-input")) {
             input.classList.remove("bottom-wrong-input");
             input.classList.add("bottom-correct-input");
-        }else{
+        } else {
             input.classList.add("bottom-correct-input");
         }
         icon.src = "images/correct.png";
-    }else{
-        if(input.classList.contains("bottom-correct-input")){
+    } else {
+        if (input.classList.contains("bottom-correct-input")) {
             input.classList.remove("bottom-correct-input");
             input.classList.add("bottom-wrong-input");
-        }else{
+        } else {
             input.classList.add("bottom-wrong-input");
         }
         icon.src = "images/remove.png";
@@ -113,15 +150,15 @@ const evaluateString = (INPUT_STRING)=>{
 
 // VALIDATION FUNCTIONS
 
-const isCharacter = (string)=>{
-    if(string == "Shift" || string == "Backspace"){return false;}
-    else{ let ascii = string.toUpperCase().charCodeAt(0); return ascii > 64 && ascii < 91;}  
+const isCharacter = (string) => {
+    if (string == "Shift" || string == "Backspace") { return false; }
+    else { let ascii = string.toUpperCase().charCodeAt(0); return ascii > 64 && ascii < 91; }
 }
-const isANumber = (string)=>{
+const isANumber = (string) => {
     let ascii = string.toUpperCase().charCodeAt(0);
     return ascii > 47 && ascii < 58;
 }
-const isOperator = (string)=>{
+const isOperator = (string) => {
     let ascii = string.toUpperCase().charCodeAt(0);
     return (ascii > 41 && ascii < 44) || ascii == 47 || ascii == 45;
 }
