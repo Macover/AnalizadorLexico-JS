@@ -39,20 +39,34 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 200;    
 }
-.container__input{
-    padding: 5px;
+.container__input-container{
     width: 350px;
+    margin: 10px auto 15px;
+    box-sizing: border-box;
+    display: flex;
+}
+.input-container__input{
+    padding: 5px;
+    width: 80%;
     background-color: transparent;
     border-top: none;
     border-left: none;
     border-right: none;
     border-bottom: 3px solid var(--titleColor);
     outline: none;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    margin-left: auto;
-    margin-right: auto;
     font-size: 15px;
+}
+.input-container__icon{
+    width: 10%;
+    display: inline;
+    margin: 0 auto;
+    margin: auto;
+}
+.bottom-correct-input{
+    border-bottom: 3px solid #0f3;
+}
+.bottom-wrong-input{
+    border-bottom: 3px solid #f03;
 }
 .container__button{
     width: 150px;

@@ -3,6 +3,7 @@ const button = document.querySelector("#button");
 const input = document.querySelector("#input");
 const tBodyTable = document.querySelector("tbody");
 const errorMessage = document.querySelector("#errorMessage");
+const icon = document.querySelector("#icon");
 
 let inputValue = "";
 let inputValueLength = 0;
@@ -13,6 +14,7 @@ button.addEventListener("click", (e) => {
     e.preventDefault();    
     inputValue = input.value;
     inputValueLength = input.value.length;  
+    
 
     for(let i=0; i<inputValueLength; i++){
         
@@ -21,12 +23,10 @@ button.addEventListener("click", (e) => {
 
     if(isANumber(inputValue[i])){
         stringTemp = inputValue[i];
-        console.log("numero", inputString[i]);
         valueType = "es número"
     }
     if(isOperator(inputValue[i])){
         stringTemp = inputValue[i];
-        console.log("operador", inputString[i]);
         valueType = "es operador";
     }      
 
@@ -40,6 +40,76 @@ button.addEventListener("click", (e) => {
     }
 
 });
+
+input.addEventListener("keyup", (e) => {
+    
+    // Validation for characters
+    if(isCharacter(e.key)){
+        input.value = " "
+        errorMessage.textContent = "Error: El input no acepta letras.";
+        errorMessage.style.opacity = "1";
+    }else{
+        errorMessage.style.opacity = "0";
+    }
+
+    evaluateString(input.value);
+
+});
+
+const evaluateString = (INPUT_STRING)=>{
+    
+    let string = INPUT_STRING;
+    let initialState = 1;
+    let finalState = 1;
+    let currentState = initialState;
+
+    let bool = true;
+    let accountant = 0;
+
+    while(bool){
+        if(accountant > string.length - 1){
+            bool = false;
+            break;
+        }
+        if(currentState == 1){
+            if(string[accountant] == 1){
+                currentState = 1;
+            }
+            if(string[accountant] == 0){
+                currentState = 2;
+            }
+            accountant++;
+            continue;
+        }
+        if(currentState == 2){
+            if(string[accountant] == 1){
+                currentState = 2;
+            }
+            if(string[accountant] == 0){
+                currentState = 1;
+            }
+            accountant++;
+            continue;
+        }
+    }
+    if(currentState == finalState){
+        if(input.classList.contains("bottom-wrong-input")){
+            input.classList.remove("bottom-wrong-input");
+            input.classList.add("bottom-correct-input");
+        }else{
+            input.classList.add("bottom-correct-input");
+        }
+        icon.src = "images/correct.png";
+    }else{
+        if(input.classList.contains("bottom-correct-input")){
+            input.classList.remove("bottom-correct-input");
+            input.classList.add("bottom-wrong-input");
+        }else{
+            input.classList.add("bottom-wrong-input");
+        }
+        icon.src = "images/remove.png";
+    }
+}
 
 // VALIDATION FUNCTIONS
 
@@ -55,39 +125,5 @@ const isOperator = (string)=>{
     let ascii = string.toUpperCase().charCodeAt(0);
     return (ascii > 41 && ascii < 44) || ascii == 47 || ascii == 45;
 }
-
-
-input.addEventListener("keyup", (e) => {
-    // table.style.opacity = "0"; it shows up when a key is pressed    
-    // inputString = input.value;
-    // console.log(inputString)
-    // inputValueLength = input.value.length;
-
-    // console.log(inputValueLength)
-    // console.log(e);
-    // let stringType = "";
-    // if(!isNaN(e.key)){
-    //     stringType = "Número";
-    // }else{
-        
-    // }
-    // let HTML_CODE = `
-    //     <tr>
-    //         <th>${inputString[inputValueLength - 1]}</th>
-    //         <th>${stringType}</th>
-    //     </tr>    
-    //     `;
-    // tBodyTable.innerHTML += HTML_CODE;
-    
-    if(isCharacter(e.key)){
-        input.value = " "
-        errorMessage.textContent = "Error: El input no acepta letras.";
-        errorMessage.style.opacity = "1";
-    }else{
-        errorMessage.style.opacity = "0";
-    }
-
-})
-
 
 

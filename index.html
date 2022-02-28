@@ -14,8 +14,11 @@
     <div class="container">
         <h1 class="container__title">Analizador <b> léxico</b> y <b> [sintáctico].</b></h1>
         <p id="errorMessage" class="error-message"></p>
-        <input type="text" id="input" placeholder="Ingrese una cadena." class="container__input" maxlength="25">
-        <button id="button" class="container__button hover-button">Mostrar tabla</button>
+        <div class="container__input-container">
+            <input type="text" id="input" placeholder="Ingrese una cadena." class="input-container__input bottom-wrong-input" maxlength="25">
+            <img id="icon" src="images/remove.png" alt="" class="input-container__icon">
+        </div>
+        <button disabled id="button" class="container__button disabled-button">Mostrar tabla</button>
         <table class="container__table" id="table">
             <thead class="table__header">
                 <tr>
