@@ -12,41 +12,46 @@ let inputString = "";
 
 button.addEventListener("click", (e) => {
     // table.style.opacity = "1";
-    e.preventDefault();    
+    e.preventDefault();
+    console.log("click")
     inputValue = input.value;
     inputValueLength = input.value.length;
 
-    let fragment = document.createDocumentFragment();
+    let numbers = "";
 
-    
     for (let i = 0; i < inputValueLength; i++) {
-        
+
+        let stringTemp = "";
+        let valueType = "";
         let array = [];
-        
+
+
         if (isANumber(inputValue[i])) {
-            let trElement = document.createElement("tr");
+            console.log(i)
             array = validateNumbers(i, inputValue);
-            i = array[0];                        
-            let thElement1 = document.createElement("th");
-            thElement1.innerHTML = array[1].toString();
-            let thElement2 = document.createElement("th");
-            thElement2.innerHTML = "Número";
-            trElement.appendChild(thElement1);
-            trElement.appendChild(thElement2);            
-            fragment.appendChild(trElement);
+            i = array[0];
+            stringTemp = array[1];
+            valueType = "es numero";
         }
-        if(isOperator(inputValue[i])) {                  
-            let trElement = document.createElement("tr");      
-            let thElement1 = document.createElement("th");
-            thElement1.innerHTML = inputValue[i];
-            let thElement2 = document.createElement("th");
-            thElement2.innerHTML = "Número";
-            trElement.appendChild(thElement1);
-            trElement.appendChild(thElement2);            
-            fragment.appendChild(trElement);
-        }        
+
+
+
+        console.log(numbers)
+
+        if (isOperator(inputValue[i])) {
+            stringTemp = inputValue[i];
+            valueType = "es operador";
+        }
+
+        let HTML_CODE = `
+    <tr>
+        <th>${stringTemp}</th>
+        <th>${valueType}</th>
+    </tr>    
+    `;
+        tBodyTable.innerHTML += HTML_CODE;
     }
-    tBodyTable.appendChild(fragment);
+
 });
 
 input.addEventListener("keyup", (e) => {
@@ -60,28 +65,27 @@ input.addEventListener("keyup", (e) => {
         errorMessage.style.opacity = "0";
     }
 
-    // evaluateString(input.value);
+    evaluateString(input.value);
 
 });
 
 // VALIDATION FUNCTIONS
 
 const validateNumbers = (i, inputValue) => {
+    
     let accountant = i;
-    let numbers = "";  
-    while (isANumber(inputValue[accountant])){        
-        numbers += inputValue[accountant];
-        if(accountant == inputValue.length - 1){
+    let numbers = "";
+   
+    while (isANumber(inputValue[accountant])){
+        if (accountant > inputValue.length - 1) {
             break;
-        }else{
-            accountant++;
         }
+        numbers.concat(inputValue[accountant].toString());
+        accountant++;
     }
     console.log(numbers)
     return [accountant, numbers];
 }
-
-
 
 const isCharacter = (string) => {
     if (string == "Shift" || string == "Backspace") { return false; }
