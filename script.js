@@ -9,6 +9,22 @@ let inputValue = "";
 let inputValueLength = 0;
 let inputString = "";
 
+const validateParenthesis = (string)=>{
+    let i;
+    let va = 0;
+    for (i = 0; i < s.length; i++){
+        if(s.substring(i,i+1) == '('){
+            va++;
+        }
+        else if(s.substring(i,i+1) == ')'){
+            va--;
+        }        
+        if (va < 0){
+            return false;
+        }
+    }        
+    return va == 0;
+}
 
 button.addEventListener("click", (e) => {
     // table.style.opacity = "1";
@@ -35,12 +51,22 @@ button.addEventListener("click", (e) => {
             trElement.appendChild(thElement2);            
             fragment.appendChild(trElement);
         }
+        if(isParenthesis(inputValue[i])) {                  
+            let trElement = document.createElement("tr");      
+            let thElement1 = document.createElement("th");
+            thElement1.innerHTML = inputValue[i];
+            let thElement2 = document.createElement("th");
+            thElement2.innerHTML = "Paréntesis";
+            trElement.appendChild(thElement1);
+            trElement.appendChild(thElement2);            
+            fragment.appendChild(trElement);
+        } 
         if(isOperator(inputValue[i])) {                  
             let trElement = document.createElement("tr");      
             let thElement1 = document.createElement("th");
             thElement1.innerHTML = inputValue[i];
             let thElement2 = document.createElement("th");
-            thElement2.innerHTML = "Número";
+            thElement2.innerHTML = "Operador";
             trElement.appendChild(thElement1);
             trElement.appendChild(thElement2);            
             fragment.appendChild(trElement);
@@ -60,6 +86,7 @@ input.addEventListener("keyup", (e) => {
         errorMessage.style.opacity = "0";
     }
 
+
     // evaluateString(input.value);
 
 });
@@ -76,12 +103,14 @@ const validateNumbers = (i, inputValue) => {
         }else{
             accountant++;
         }
-    }
-    console.log(numbers)
+    }    
     return [accountant, numbers];
 }
 
-
+const isParenthesis = (string) =>{
+    let ascii = string.toUpperCase().charCodeAt(0);
+    return ascii == 40 || ascii == 41;
+}
 
 const isCharacter = (string) => {
     if (string == "Shift" || string == "Backspace") { return false; }
