@@ -1,3 +1,10 @@
+/* 
+    --> CREDITS <--
+    Isaí Rodríguez Herrera : https://github.com/Macover/
+    Diego Armando Ochoa Martínez: 
+    Aritzi Denalyh Anacleto Angeles: 
+*/
+
 const table = document.querySelector("#table");
 const button = document.querySelector("#button");
 const input = document.getElementById("input");
