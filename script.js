@@ -78,14 +78,10 @@ button.addEventListener("click", (e) => {
     thElement1.innerHTML = "Resultado"
     thElement2.innerHTML = result;
 
-    if(result != 0){
+    if(result != 0)
         thElement1.style.backgroundColor = "#0F0";
-        thElement2.style.backgroundColor = "#0F0";    
-    }else{
-        thElement1.style.backgroundColor = "#F00";
-        thElement2.style.backgroundColor = "#F00";
-    }
-    
+        thElement2.style.backgroundColor = "#0F0";
+                           
 
     trElement.appendChild(thElement1);      
     trElement.appendChild(thElement2);      
@@ -95,30 +91,23 @@ button.addEventListener("click", (e) => {
 
 let isValidated = false;
 
-input.addEventListener('input', function () {
-    var error = true;
-    try{        
-        if (/^[\d-+/*()]+$/.test(input.value)) {                        
-            result = eval(input.value);
-            error = false;
-            if (input.classList.contains("bottom-wrong-input")) {
-                input.classList.remove("bottom-wrong-input");
-                input.classList.add("bottom-correct-input");
-            } else {
-                input.classList.add("bottom-correct-input");
-            }
-            icon.src = "images/correct.png";
-            if(button.classList.contains("disabled-button")){
-                button.classList.remove("disabled-button");
-                button.classList.add("hover-button");
-            }
-            if(button.hasAttribute("disabled")){                
-                button.removeAttribute("disabled",false);
-            }
+const isAValidStyle = valuate =>{
+    if(!valuate){
+        if (input.classList.contains("bottom-wrong-input")) {
+            input.classList.remove("bottom-wrong-input");
+            input.classList.add("bottom-correct-input");
+        } else {
+            input.classList.add("bottom-correct-input");
         }
-    } catch (err) { }
-    if (error){
-        result = 0;                
+        icon.src = "images/correct.png";
+        if(button.classList.contains("disabled-button")){
+            button.classList.remove("disabled-button");
+            button.classList.add("hover-button");
+        }
+        if(button.hasAttribute("disabled")){                
+            button.removeAttribute("disabled",false);
+        }
+    }else{
         if (input.classList.contains("bottom-correct-input")) {
             input.classList.remove("bottom-correct-input");
             input.classList.add("bottom-wrong-input");
@@ -133,7 +122,30 @@ input.addEventListener('input', function () {
         if(!button.hasAttribute("disabled")){
             button.setAttribute("disabled",true);
         }
-    } 
+    }
+}
+
+input.addEventListener('input', function () {
+    let bool = true;
+        
+    if(input.value[0] == "a" || input.value[0] == "b"){
+        if(/^[a]{1}[-]{2}$/.test(input.value) || /^[a]{1}[+]{2}$/.test(input.value)){
+            bool = false;
+        }else{
+            bool = true;
+        }
+    }
+    else{
+        try{        
+            if (/^[\d-+/*()]+$/.test(input.value)) {                        
+                result = eval(input.value);
+                bool = false;                 
+            }
+        } catch (err) {            
+            bool = true;
+        }    
+    }
+    isAValidStyle(bool);    
 });
 
 input.addEventListener("keyup", (e) => {
@@ -141,15 +153,13 @@ input.addEventListener("keyup", (e) => {
     // Validation for characters
     if (isCharacter(e.key)) {
         input.value = "";
-        errorMessage.textContent = "Error: El input no acepta letras.";
+        errorMessage.textContent = `Error: El input no acepta letras, que no sean "a" o "b".`;
         errorMessage.style.opacity = "1";
     } else {
         errorMessage.style.opacity = "0";
     }
     tBodyTable.innerHTML = "";
 });
-
-
 
 // VALIDATION FUNCTIONS
 
@@ -173,7 +183,8 @@ const isParenthesis = (string) =>{
 }
 
 const isCharacter = (string) => {
-    if (string == "Shift" || string == "Backspace" || string == "ArrowLeft" || string == "ArrowRight" || string == "Home" || string == "End") { return false; }
+    if (string == "b" || string == "a" || string == "Shift" || string == "Backspace" || string == "ArrowLeft"
+    || string == "ArrowRight" || string == "Home" || string == "End") { return false; }
     else { let ascii = string.toUpperCase().charCodeAt(0); return ascii > 64 && ascii < 91; }
 }
 const isANumber = (string) => {
