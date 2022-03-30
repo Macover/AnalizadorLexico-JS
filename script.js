@@ -48,6 +48,16 @@ button.addEventListener("click", (e) => {
             trElement.appendChild(thElement2);            
             fragment.appendChild(trElement);
         }
+        if(inputValue[i] == "="){
+            let trElement = document.createElement("tr");      
+            let thElement1 = document.createElement("th");
+            thElement1.innerHTML = inputValue[i];
+            let thElement2 = document.createElement("th");
+            thElement2.innerHTML = "Signo igual";
+            trElement.appendChild(thElement1);
+            trElement.appendChild(thElement2);            
+            fragment.appendChild(trElement);
+        }
         
         if (isANumber(inputValue[i])) {
             let trElement = document.createElement("tr");
@@ -143,31 +153,56 @@ const isAValidStyle = valuate =>{
     }
 }
 
+const regularExpresionNumbers = string =>{    
+    let bool = true;
+    try{        
+        if (/^[\d-+/*()]+$/.test(string)) {                        
+            result = eval(string);
+            bool = false;                 
+        }
+    } catch (err) {            
+        bool = true;
+    } 
+    return bool;
+}
+
+const cleanInputValue = string =>{
+    let array = string.split(" ");
+    let stringCleaned = "";
+    for (let i = 0; i < array.length; i++) {
+        stringCleaned += array[i];
+    }
+    return stringCleaned;
+}
+
 input.addEventListener('input', function () {
     let bool = true;
+    result = 0;
+
+    let stringCleaned = cleanInputValue(input.value);    
         
-    if(input.value[0] == "a" || input.value[0] == "b"){
-        if(/^[a]{1}[-]{2}$/.test(input.value) || /^[a]{1}[+]{2}$/.test(input.value)
-        || /^[b]{1}[-]{2}$/.test(input.value) || /^[b]{1}[+]{2}$/.test(input.value)){
+    if(stringCleaned[0] == "a" || stringCleaned[0] == "b"){
+        if(/^[a]{1}[-]{2}$/.test(stringCleaned) || /^[a]{1}[+]{2}$/.test(stringCleaned)
+        || /^[b]{1}[-]{2}$/.test(stringCleaned) || /^[b]{1}[+]{2}$/.test(stringCleaned)){
             bool = false;
-        }else{
+        }else if(/^[a]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){                        
+            let stringArray = stringCleaned.split("=");            
+            bool = regularExpresionNumbers(stringArray[1]);            
+        }else if(/^[a]{1}[=]{1}[\d-+/*b()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*a()]+$/.test(stringCleaned)){
+            bool = false;            
+        }
+        else{
             bool = true;
         }
     }
     else{
-        try{        
-            if (/^[\d-+/*()]+$/.test(input.value)) {                        
-                result = eval(input.value);
-                bool = false;                 
-            }
-        } catch (err) {            
-            bool = true;
-        }    
+        bool = regularExpresionNumbers(stringCleaned);  
     }
+    isAValidStyle(bool);
     isAValidStyle(bool);    
 });
 
-input.addEventListener("keyup", (e) => {
+input.addEventListener("keyup", (e) => {    
     table.style.opacity = "0";    
     // Validation for characters
     if (isCharacter(e.key)) {
@@ -202,8 +237,9 @@ const isParenthesis = (string) =>{
 }
 
 const isCharacter = (string) => {
-    if (string == "b" || string == "a" || string == "Shift" || string == "Backspace" || string == "ArrowLeft"
-    || string == "ArrowRight" || string == "Home" || string == "End") { return false; }
+    if (string == "b" || string == "a" || string == "Delete" || string == "Shift" 
+    || string == "Backspace" || string == "ArrowLeft" || string == "ArrowRight" || 
+    string == "Home" || string == "End") { return false; }
     else { let ascii = string.toUpperCase().charCodeAt(0); return ascii > 64 && ascii < 91; }
 }
 const isANumber = (string) => {
