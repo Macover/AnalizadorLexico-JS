@@ -180,14 +180,15 @@ input.addEventListener('input', function () {
     result = 0;
 
     let stringCleaned = cleanInputValue(input.value);    
-        
     if(stringCleaned[0] == "a" || stringCleaned[0] == "b"){
-        if(/^[(a|b)]{1}[(-|+)]{2}$/.test(stringCleaned)){
+        if(/^[a|b]{1}[-|+]{2}$/.test(stringCleaned)){
             bool = false;
-        }else if(/^[(a|b)]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){      //a--                  
+        }
+        else if(/^[(a|b)]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){      //a--                  
             let stringArray = stringCleaned.split("=");            
             bool = regularExpresionNumbers(stringArray[1]);            
-        }else if(/^[a]{1}[=]{1}[\d-+/*b()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*a()]+$/.test(stringCleaned)){ //a = b + ...
+        }
+        else if(/^[a]{1}[=]{1}[\d-+/*b()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*a()]+$/.test(stringCleaned)){ //a = b + ...
             bool = false;            //error
         }
         else if(/^[(a|b)]{1}[(+|\d-|/|*)]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){ //a+= ...
