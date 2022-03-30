@@ -37,6 +37,17 @@ button.addEventListener("click", (e) => {
     for (let i = 0; i < inputValueLength; i++) {
         
         let array = [];
+
+        if(inputValue[i] == "a" || inputValue[i] == "b"){
+            let trElement = document.createElement("tr");      
+            let thElement1 = document.createElement("th");
+            thElement1.innerHTML = inputValue[i];
+            let thElement2 = document.createElement("th");
+            thElement2.innerHTML = "Variable";
+            trElement.appendChild(thElement1);
+            trElement.appendChild(thElement2);            
+            fragment.appendChild(trElement);
+        }
         
         if (isANumber(inputValue[i])) {
             let trElement = document.createElement("tr");
@@ -78,9 +89,16 @@ button.addEventListener("click", (e) => {
     thElement1.innerHTML = "Resultado"
     thElement2.innerHTML = result;
 
-    if(result != 0)
+    if(result != 0){
         thElement1.style.backgroundColor = "#0F0";
         thElement2.style.backgroundColor = "#0F0";
+        thElement2.innerHTML = result;
+    }else{
+        thElement1.style.backgroundColor = "#0F0";
+        thElement2.style.backgroundColor = "#0F0";
+        thElement2.innerHTML = "Expresión correcta.";
+    }
+        
                            
 
     trElement.appendChild(thElement1);      
@@ -129,7 +147,8 @@ input.addEventListener('input', function () {
     let bool = true;
         
     if(input.value[0] == "a" || input.value[0] == "b"){
-        if(/^[a]{1}[-]{2}$/.test(input.value) || /^[a]{1}[+]{2}$/.test(input.value)){
+        if(/^[a]{1}[-]{2}$/.test(input.value) || /^[a]{1}[+]{2}$/.test(input.value)
+        || /^[b]{1}[-]{2}$/.test(input.value) || /^[b]{1}[+]{2}$/.test(input.value)){
             bool = false;
         }else{
             bool = true;
