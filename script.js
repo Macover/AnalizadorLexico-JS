@@ -1,6 +1,6 @@
 /* 
     --> CREDITS <--
-    Isaí Rodríguez Herrera : https://github.com/Macover/
+    Isaí Rodríguez Herrera : https://github.com/Macover/AnalizadorLexico-JS
     Diego Armando Ochoa Martínez: 
     Aritzi Denalyh Anacleto Angeles: 
 */
@@ -182,15 +182,18 @@ input.addEventListener('input', function () {
     let stringCleaned = cleanInputValue(input.value);    
         
     if(stringCleaned[0] == "a" || stringCleaned[0] == "b"){
-        if(/^[a]{1}[-]{2}$/.test(stringCleaned) || /^[a]{1}[+]{2}$/.test(stringCleaned)
-        || /^[b]{1}[-]{2}$/.test(stringCleaned) || /^[b]{1}[+]{2}$/.test(stringCleaned)){
+        if(/^[(a|b)]{1}[(-|+)]{2}$/.test(stringCleaned)){
             bool = false;
-        }else if(/^[a]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){                        
+        }else if(/^[(a|b)]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){      //a--                  
             let stringArray = stringCleaned.split("=");            
             bool = regularExpresionNumbers(stringArray[1]);            
-        }else if(/^[a]{1}[=]{1}[\d-+/*b()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*a()]+$/.test(stringCleaned)){
-            bool = false;            
+        }else if(/^[a]{1}[=]{1}[\d-+/*b()]+$/.test(stringCleaned) || /^[b]{1}[=]{1}[\d-+/*a()]+$/.test(stringCleaned)){ //a = b + ...
+            bool = false;            //error
         }
+        else if(/^[(a|b)]{1}[(+|\d-|/|*)]{1}[=]{1}[\d-+/*()]+$/.test(stringCleaned)){ //a+= ...
+            let stringArray = stringCleaned.split("=");                        
+            bool = regularExpresionNumbers(stringArray[1]);            
+        }        
         else{
             bool = true;
         }
@@ -198,8 +201,7 @@ input.addEventListener('input', function () {
     else{
         bool = regularExpresionNumbers(stringCleaned);  
     }
-    isAValidStyle(bool);
-    isAValidStyle(bool);    
+    isAValidStyle(bool);       
 });
 
 input.addEventListener("keyup", (e) => {    
